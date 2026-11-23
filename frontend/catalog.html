@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Digital - CataliA Bolivia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="bg-black/60 backdrop-blur-md border-b border-purple-900/50 p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-black text-purple-400">CataliA <span class="text-green-400">Catálogo</span></span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button type="button" onclick="exportPublicCatalogPdf()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-lg shadow-purple-900/40">
+                    📄 Descargar Catálogo PDF
+                </button>
+                <a href="dashboard.html" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                    ← Volver al CRM
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Catalog Content -->
+    <main class="max-w-6xl mx-auto px-4 py-10 flex-grow w-full">
+
+        <!-- Banner Comercial -->
+        <div class="bg-gradient-to-r from-purple-900/60 to-gray-800 border border-purple-800/50 rounded-3xl p-8 mb-10 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <span class="bg-green-500/20 text-green-300 border border-green-600 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider">Tienda Verificada</span>
+                <h1 id="catalog-business-title" class="text-3xl font-black text-white mt-3">Vitrina Comercial</h1>
+                <p class="text-gray-300 text-sm mt-1">Explora los productos disponibles con entrega inmediata y garantía local.</p>
+            </div>
+            <div class="bg-black/40 border border-gray-700 p-4 rounded-2xl text-center min-w-[180px]">
+                <span class="text-xs text-gray-400 block">Total Productos</span>
+                <span id="catalog-count" class="text-2xl font-extrabold text-purple-400">0</span>
+            </div>
+        </div>
+
+        <!-- Filtros de Categorías -->
+        <div id="categories-filter" class="flex flex-wrap gap-2 mb-8">
+            <button type="button" data-category="ALL" class="cat-filter-btn bg-purple-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow">📦 Todos</button>
+        </div>
+
+        <!-- Cuadrícula de Productos -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="col-span-full text-center py-16 text-gray-500">
+                Cargando vitrina de productos...
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-gray-500 border-t border-gray-800">
+        CataliA Bolivia · Impulsando el Comercio Local con Inteligencia Artificial
+    </footer>
+
+    <script>
+        const API_URL = "/api";
+        const DEFAULT_WHATSAPP_NUMBER = "59170000000";
+        const FALLBACK_IMAGE = "data:image/svg+xml;utf8," + encodeURIComponent(
+            `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+                <rect width="400" height="300" fill="#1f1635"/>
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#c084fc" font-family="Arial, sans-serif" font-size="24" font-weight="bold">CataliA Bolivia</text>
+            </svg>`
+        );
+
+        let allProducts = [];
+        let activeCategory = "ALL";
+        let catalogBusinessName = "Vitrina Comercial";
+        let catalogWhatsappNumber = DEFAULT_WHATSAPP_NUMBER;
+
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        function normalizeWhatsapp(raw) {
+            const digits = String(raw || "").replace(/\D/g, "");
+            return digits.length >= 8 ? digits : DEFAULT_WHATSAPP_NUMBER;
+        }
+
+        window.onload = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryUserId = urlParams.get("user_id");
+            let parsedStored = null;
+
+            try {
+                const storedUser = localStorage.getItem("catalia_user");
+                parsedStored = storedUser ? JSON.parse(storedUser) : null;
+            } catch (e) {
+                parsedStored = null;
+            }
+
+            const userId = queryUserId || (parsedStored && parsedStored.id ? parsedStored.id : 1);
+
+            if (queryUserId) {
+                try {
+                    const usersRes = await fetch(`${API_URL}/admin/users`);
+                    if (usersRes.ok) {
+                        const usersList = await usersRes.json();
+                        const matched = Array.isArray(usersList)
+                            ? usersList.find(u => String(u.id) === String(queryUserId))
+                            : null;
+                        if (matched) {
+                            if (matched.business_name) catalogBusinessName = matched.business_name;
+                            catalogWhatsappNumber = normalizeWhatsapp(matched.whatsapp || matched.phone);
+                        }
+                    }
+                } catch (e) {
+                    console.warn("No se pudo obtener el comercio por user_id.");
+                }
+            } else if (parsedStored) {
+                if (parsedStored.business_name) catalogBusinessName = parsedStored.business_name;
+                catalogWhatsappNumber = normalizeWhatsapp(parsedStored.whatsapp || parsedStored.phone);
+            }
+
+            document.getElementById("catalog-business-title").textContent = catalogBusinessName;
+
+            try {
+                const res = await fetch(`${API_URL}/products/${encodeURIComponent(userId)}`);
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}`);
+                }
+                const data = await res.json();
+                allProducts = Array.isArray(data) ? data : [];
+
+                document.getElementById("catalog-count").textContent = allProducts.length;
+
+                renderCategories();
+                renderProducts(allProducts);
+            } catch (err) {
+                console.error("Error cargando catálogo:", err);
+                document.getElementById("products-grid").innerHTML =
+                    `<div class="col-span-full text-center text-red-400">Error al cargar los productos del catálogo.</div>`;
+            }
+        };
+
+        function renderCategories() {
+            const categories = ["ALL", ...new Set(allProducts.map(p => p.category).filter(Boolean))];
+            const filterContainer = document.getElementById("categories-filter");
+            filterContainer.innerHTML = "";
+
+            categories.forEach(cat => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.dataset.category = cat;
+                const isActive = cat === activeCategory;
+                btn.className = isActive
+                    ? "cat-filter-btn bg-purple-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow"
+                    : "cat-filter-btn bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 text-xs font-semibold px-4 py-2 rounded-xl transition";
+                btn.textContent = cat === "ALL" ? "📦 Todos" : cat;
+                btn.addEventListener("click", () => filterCategory(cat));
+                filterContainer.appendChild(btn);
+            });
+        }
+
+        function filterCategory(category) {
+            activeCategory = category;
+            renderCategories();
+            if (category === "ALL") {
+                renderProducts(allProducts);
+            } else {
+                const filtered = allProducts.filter(p => p.category === category);
+                renderProducts(filtered);
+            }
+        }
+
+        async function orderViaWhatsApp(productId, productName, price, currency) {
+            try {
+                await fetch(`${API_URL}/orders/track/${encodeURIComponent(productId)}`, {
+                    method: "POST"
+                });
+            } catch (e) {
+                console.warn("No se pudo registrar la métrica en el servidor, abriendo WhatsApp...");
+            }
+
+            const message = `¡Hola! Me interesa comprar el producto *${productName}* a *${price} ${currency}* que vi en ${catalogBusinessName} (CataliA). ¿Tienen disponibilidad?`;
+            const whatsappUrl = `https://wa.me/${catalogWhatsappNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+        }
+
+        async function loadImageAsDataUrl(url) {
+            if (!url) return null;
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = "Anonymous";
+                img.onload = () => {
+                    const w = img.naturalWidth || 1;
+                    const h = img.naturalHeight || 1;
+                    const canvas = document.createElement("canvas");
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    const format = url.startsWith("data:image/jpeg") || url.startsWith("data:image/jpg") ? "JPEG" : "PNG";
+                    resolve({
+                        dataUrl: canvas.toDataURL(format === "JPEG" ? "image/jpeg" : "image/png", 0.85),
+                        format,
+                        ratio: h / w
+                    });
+                };
+                img.onerror = () => resolve(null);
+                img.src = url;
+            });
+        }
+
+        async function exportPublicCatalogPdf() {
+            if (!window.jspdf || !window.jspdf.jsPDF) {
+                alert("No se cargó jsPDF. Verifica tu conexión a internet para el CDN.");
+                return;
+            }
+
+            if (!allProducts || allProducts.length === 0) {
+                alert("No hay productos disponibles para exportar en PDF.");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const fechaEmision = new Date().toLocaleString("es-BO");
+
+            const preparedImages = await Promise.all(
+                allProducts.map((p) => loadImageAsDataUrl(p.image_data || FALLBACK_IMAGE))
+            );
+
+            doc.setFillColor(24, 10, 46);
+            doc.rect(0, 0, pageWidth, 36, "F");
+
+            const logoAsset = await loadImageAsDataUrl("/static/logo-catalia.png");
+            if (logoAsset) {
+                const logoW = 40;
+                const logoH = Math.min(24, logoW * logoAsset.ratio);
+                doc.addImage(logoAsset.dataUrl, logoAsset.format, 14, 6, logoW, logoH);
+            } else {
+                doc.setTextColor(192, 132, 252);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(15);
+                doc.text("CataliA BOLIVIA", 14, 18);
+            }
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(13);
+            doc.text(catalogBusinessName.toUpperCase(), pageWidth - 14, 14, { align: "right" });
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9);
+            doc.setTextColor(110, 231, 183);
+            doc.text(`Catálogo Oficial · ${allProducts.length} producto(s)`, pageWidth - 14, 21, { align: "right" });
+            doc.setTextColor(216, 180, 254);
+            doc.text(`Emitido: ${fechaEmision}`, pageWidth - 14, 27, { align: "right" });
+
+            const rows = allProducts.map((p, idx) => [
+                String(idx + 1),
+                "",
+                p.name || "Producto",
+                p.category || "General",
+                p.commercial_description || "-",
+                `${p.price} ${p.currency || "Bs"}`
+            ]);
+
+            doc.autoTable({
+                startY: 44,
+                head: [["#", "Imagen", "Producto", "Categoría", "Descripción Comercial", "Precio"]],
+                body: rows,
+                theme: "grid",
+                styles: {
+                    fontSize: 8.5,
+                    cellPadding: 2.5,
+                    textColor: [30, 41, 59],
+                    valign: "middle",
+                    minCellHeight: 22
+                },
+                columnStyles: {
+                    0: { cellWidth: 9, halign: "center" },
+                    1: { cellWidth: 22, halign: "center" },
+                    2: { cellWidth: 32, fontStyle: "bold" },
+                    3: { cellWidth: 25 },
+                    4: { cellWidth: 72 },
+                    5: { cellWidth: 22, halign: "right", fontStyle: "bold" }
+                },
+                headStyles: {
+                    fillColor: [88, 28, 135],
+                    textColor: [255, 255, 255],
+                    fontStyle: "bold",
+                    minCellHeight: 9
+                },
+                alternateRowStyles: {
+                    fillColor: [248, 250, 252]
+                },
+                margin: { left: 14, right: 14 },
+                didDrawCell: (data) => {
+                    if (data.section === "body" && data.column.index === 1) {
+                        const asset = preparedImages[data.row.index];
+                        if (asset && asset.dataUrl) {
+                            const maxW = data.cell.width - 4;
+                            const maxH = data.cell.height - 4;
+                            let drawW = maxW;
+                            let drawH = drawW * asset.ratio;
+
+                            if (drawH > maxH) {
+                                drawH = maxH;
+                                drawW = drawH / asset.ratio;
+                            }
+
+                            const x = data.cell.x + (data.cell.width - drawW) / 2;
+                            const y = data.cell.y + (data.cell.height - drawH) / 2;
+
+                            try {
+                                doc.addImage(asset.dataUrl, asset.format, x, y, drawW, drawH);
+                            } catch (e) {
+                                // Ignora imágenes inválidas en el PDF
+                            }
+                        }
+                    }
+                }
+            });
+
+            const totalPages = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= totalPages; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(100, 116, 139);
+                doc.text(
+                    `${catalogBusinessName} · WhatsApp: +${catalogWhatsappNumber} — Pág. ${i}/${totalPages}`,
+                    pageWidth / 2,
+                    pageHeight - 8,
+                    { align: "center" }
+                );
+            }
+
+            const safeName = catalogBusinessName.toLowerCase().replace(/[^a-z0-9]+/gi, "_") || "catalogo";
+            doc.save(`catalogo_${safeName}_${new Date().toISOString().slice(0, 10)}.pdf`);
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById("products-grid");
+            grid.innerHTML = "";
+
+            if (!Array.isArray(products) || products.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500">No hay productos en esta categoría.</div>`;
+                return;
+            }
+
+            products.forEach(p => {
+                const card = document.createElement("div");
+                card.className = "bg-gray-800/80 border border-gray-700/80 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-purple-500/50 transition";
+
+                const imgSrc = p.image_data || FALLBACK_IMAGE;
+                const currency = p.currency || "Bs";
+
+                card.innerHTML = `
+                    <div>
+                        <div class="h-48 bg-gray-900 overflow-hidden relative">
+                            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name || "Producto")}" class="w-full h-full object-cover">
+                            <span class="absolute top-3 right-3 bg-purple-950/90 text-purple-300 border border-purple-800 text-[10px] uppercase font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
+                                ${escapeHtml(p.category || "General")}
+                            </span>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg text-white mb-1">${escapeHtml(p.name || "Producto")}</h3>
+                            <p class="text-xs text-purple-300 italic mb-3">${p.urgency_phrase ? `"${escapeHtml(p.urgency_phrase)}"` : ""}</p>
+                            <p class="text-sm text-gray-300 leading-relaxed mb-4">${escapeHtml(p.commercial_description || "")}</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0 flex justify-between items-center border-t border-gray-700/60 mt-4">
+                        <span class="text-xl font-extrabold text-green-400">${escapeHtml(p.price)} ${escapeHtml(currency)}</span>
+                        <button type="button" class="wa-order-btn bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-lg shadow-green-900/30">
+                            <span>📲 Pedir por WhatsApp</span>
+                        </button>
+                    </div>
+                `;
+
+                const imgEl = card.querySelector("img");
+                imgEl.addEventListener("error", () => {
+                    if (imgEl.src !== FALLBACK_IMAGE) imgEl.src = FALLBACK_IMAGE;
+                });
+
+                const waBtn = card.querySelector(".wa-order-btn");
+                waBtn.addEventListener("click", () => {
+                    orderViaWhatsApp(p.id, p.name || "Producto", p.price ?? 0, currency);
+                });
+
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>

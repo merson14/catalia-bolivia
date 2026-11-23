@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Gerencial & Finanzas - CataliA Bolivia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="bg-black/70 backdrop-blur-md border-b border-purple-900/50 px-4 py-3.5 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-2.5">
+                <span class="text-2xl font-black text-purple-400">CataliA <span class="text-green-400">CRM</span></span>
+                <span
+                    class="text-xs bg-red-950 text-red-300 border border-red-800 px-2.5 py-0.5 rounded-full font-semibold">Admin
+                    Privado</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="index.html" onclick="clearAllSessionData();"
+                    class="text-sm text-gray-400 hover:text-white transition">Cerrar Sesión</a>
+                <a href="dashboard.html"
+                    class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-lg shadow-purple-900/40 whitespace-nowrap">
+                    Ir al CRM Comerciante ↗
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+
+        <!-- Encabezado y Acciones en Fila Ordenada -->
+        <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 bg-gray-900/60 border border-gray-800/80 rounded-2xl p-5">
+            <div class="max-w-xl">
+                <h1 class="text-2xl sm:text-3xl font-black text-white">CRM Comercial y Control Financiero</h1>
+                <p class="text-gray-400 text-xs sm:text-sm mt-1">Gestión de cartera, suscripciones SaaS, reportes exportables y
+                    bitácora operativa en Bolivia y Latinoamérica.</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+                <button onclick="openAddUserModal()"
+                    class="bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-extrabold text-xs px-3.5 py-2.5 rounded-xl transition whitespace-nowrap">
+                    + Agregar Usuario
+                </button>
+                <button onclick="toggleReportPanel()"
+                    class="bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl transition whitespace-nowrap">
+                    📊 Reportes
+                </button>
+                <button onclick="downloadCsvReport(allMerchants, logAction)"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-emerald-300 font-bold text-xs px-3.5 py-2.5 rounded-xl transition whitespace-nowrap">
+                    ⬇ CSV
+                </button>
+                <button onclick="exportAdminPdfReport(allMerchants, logAction)"
+                    class="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl transition whitespace-nowrap">
+                    📄 PDF
+                </button>
+                <button onclick="scrollToAuditLog()"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-purple-300 font-bold text-xs px-3.5 py-2.5 rounded-xl transition whitespace-nowrap">
+                    📜 Registro
+                </button>
+                <button onclick="loadAdminOverview('Actualización manual de métricas')"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs font-bold text-gray-200 px-3 py-2.5 rounded-xl transition"
+                    title="Actualizar métricas">
+                    ↻
+                </button>
+            </div>
+        </div>
+
+        <!-- Tarjetas KPI -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div class="bg-gray-900/90 border border-gray-800 p-4 sm:p-5 rounded-2xl">
+                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Comercios Activos</span>
+                <div id="kpi-merchants" class="text-2xl sm:text-3xl font-black text-white mt-1">0</div>
+            </div>
+            <div class="bg-gray-900/90 border border-gray-800 p-4 sm:p-5 rounded-2xl">
+                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Cuentas de Pago</span>
+                <div id="kpi-paid" class="text-2xl sm:text-3xl font-black text-emerald-400 mt-1">0</div>
+            </div>
+            <div class="bg-gray-900/90 border border-gray-800 p-4 sm:p-5 rounded-2xl">
+                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Productos en Red</span>
+                <div id="kpi-products" class="text-2xl sm:text-3xl font-black text-purple-400 mt-1">0</div>
+            </div>
+            <div class="bg-gray-900/90 border border-gray-800 p-4 sm:p-5 rounded-2xl">
+                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Flyers Creados</span>
+                <div id="kpi-flyers" class="text-2xl sm:text-3xl font-black text-amber-400 mt-1">0</div>
+            </div>
+            <div class="bg-gray-900/90 border border-gray-800 p-4 sm:p-5 rounded-2xl col-span-2 md:col-span-1">
+                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Ingreso Mensual Est.</span>
+                <div id="kpi-revenue" class="text-2xl sm:text-3xl font-black text-green-400 mt-1">0.00 Bs</div>
+            </div>
+        </div>
+
+        <!-- Panel de Reportes Gerenciales (Ordenado) -->
+        <section id="report-panel"
+            class="hidden bg-gray-900/90 border border-purple-700/50 rounded-2xl p-6 shadow-xl space-y-5">
+            <div class="flex flex-wrap justify-between items-center gap-3 border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-lg font-bold text-white">📊 Reporte Ejecutivo de Cartera y Planes</h2>
+                    <p class="text-xs text-gray-400">Resumen analítico y financiero de la cartera actual.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="downloadCsvReport(allMerchants, logAction)"
+                        class="bg-emerald-600 hover:bg-emerald-500 text-gray-950 font-bold text-xs px-3.5 py-2 rounded-xl transition">
+                        ⬇ Descargar CSV
+                    </button>
+                    <button onclick="exportAdminPdfReport(allMerchants, logAction)"
+                        class="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition">
+                        📄 Descargar PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-gray-950/80 border border-gray-800 rounded-xl p-4">
+                    <span class="text-[11px] text-gray-400 uppercase font-bold">Distribución e Ingresos por Plan</span>
+                    <div id="report-plan-breakdown" class="mt-3 space-y-1.5 text-xs text-gray-200"></div>
+                </div>
+                <div class="bg-gray-950/80 border border-gray-800 rounded-xl p-4">
+                    <span class="text-[11px] text-gray-400 uppercase font-bold">Top Comercio por Inventario</span>
+                    <div id="report-top-products" class="mt-3 text-sm text-white font-bold"></div>
+                </div>
+                <div class="bg-gray-950/80 border border-gray-800 rounded-xl p-4">
+                    <span class="text-[11px] text-gray-400 uppercase font-bold">Top Comercio por Flyers</span>
+                    <div id="report-top-flyers" class="mt-3 text-sm text-amber-300 font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Barra de Filtros del CRM -->
+        <section
+            class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
+            <div class="flex-grow max-w-md">
+                <input type="text" id="search-merchant" oninput="applyFilters()"
+                    placeholder="Buscar comercio, correo o WhatsApp..."
+                    class="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+            </div>
+            <div class="flex flex-wrap gap-2" id="plan-filter-buttons">
+                <button data-plan="ALL" onclick="setPlanFilter('ALL')"
+                    class="plan-btn bg-purple-600 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition">Todos</button>
+                <button data-plan="free" onclick="setPlanFilter('free')"
+                    class="plan-btn bg-gray-900 hover:bg-gray-700 text-gray-300 border border-gray-700 text-xs font-semibold px-3.5 py-2 rounded-xl transition">Freemium</button>
+                <button data-plan="pro_50bs" onclick="setPlanFilter('pro_50bs')"
+                    class="plan-btn bg-gray-900 hover:bg-gray-700 text-gray-300 border border-gray-700 text-xs font-semibold px-3.5 py-2 rounded-xl transition">Comercio
+                    Pro</button>
+                <button data-plan="campana" onclick="setPlanFilter('campana')"
+                    class="plan-btn bg-gray-900 hover:bg-gray-700 text-gray-300 border border-gray-700 text-xs font-semibold px-3.5 py-2 rounded-xl transition">Campaña</button>
+            </div>
+        </section>
+
+        <!-- Tabla CRM de Comercios -->
+        <section class="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
+            <div class="p-5 border-b border-gray-800 flex flex-wrap justify-between items-center gap-2">
+                <h2 class="font-bold text-white">Cartera de Comercios y Suscripciones SaaS</h2>
+                <span id="filtered-count" class="text-xs text-gray-400">Mostrando 0 comercios</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-950/70 text-xs uppercase text-gray-400 border-b border-gray-800">
+                            <th class="p-4">Comercio / Importadora</th>
+                            <th class="p-4">Contacto</th>
+                            <th class="p-4">Plan SaaS</th>
+                            <th class="p-4">Productos</th>
+                            <th class="p-4">Flyers</th>
+                            <th class="p-4 text-right">Gestión CRM</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-merchants-tbody" class="divide-y divide-gray-800/70 text-sm">
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-gray-500">Cargando datos gerenciales...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Registro / Bitácora de Operaciones CRM -->
+        <section id="audit-log-section"
+            class="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
+            <div class="p-5 border-b border-gray-800 flex flex-wrap justify-between items-center gap-2">
+                <div>
+                    <h2 class="font-bold text-white">📜 Registro de Actividad y Auditoría CRM</h2>
+                    <p class="text-xs text-gray-400">Historial de altas, ediciones, reportes y eliminaciones.</p>
+                </div>
+                <button onclick="clearAuditLog()" class="text-xs text-gray-400 hover:text-red-300 transition">Limpiar
+                    registro</button>
+            </div>
+            <div class="p-5">
+                <ul id="audit-log-list" class="space-y-2 text-xs text-gray-300">
+                    <li class="text-gray-500">Sin eventos registrados aún.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Agregar Usuario -->
+    <div id="add-user-modal"
+        class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-gray-900 border border-purple-800/60 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="text-lg font-bold text-white">+ Agregar Nuevo Comercio / Usuario</h3>
+                <button onclick="closeAddUserModal()" class="text-gray-400 hover:text-white text-lg">✕</button>
+            </div>
+            <form id="add-user-form" onsubmit="handleCreateUser(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Nombre del Negocio / Importadora</label>
+                    <input type="text" id="new-user-business" required placeholder="Ej. Comercial Illimani"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">WhatsApp Internacional (Ej. 59171234567)</label>
+                    <input type="tel" id="new-user-whatsapp" placeholder="59171234567"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Correo Electrónico</label>
+                    <input type="email" id="new-user-email" required placeholder="comercio@ejemplo.bo"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Contraseña Inicial</label>
+                    <input type="password" id="new-user-password" required minlength="4" placeholder="••••••••"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Plan SaaS Asignado</label>
+                    <select id="new-user-plan"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:outline-none focus:border-purple-500">
+                        <option value="free">Plan Freemium</option>
+                        <option value="pro_50bs">Plan Comercio Pro (65 Bs)</option>
+                        <option value="campana">Pase Campaña</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-2 pt-2">
+                    <button type="button" onclick="closeAddUserModal()"
+                        class="px-4 py-2 rounded-xl text-xs font-bold bg-gray-800 hover:bg-gray-700 text-gray-300 transition">Cancelar</button>
+                    <button type="submit" id="btn-create-user"
+                        class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-gray-950 transition">Guardar
+                        Usuario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Editar Cliente -->
+    <div id="edit-user-modal"
+        class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-gray-900 border border-sky-800/60 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="text-lg font-bold text-white">✏️ Editar Cliente / Comercio</h3>
+                <button onclick="closeEditUserModal()" class="text-gray-400 hover:text-white text-lg">✕</button>
+            </div>
+            <form id="edit-user-form" onsubmit="handleUpdateUser(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Nombre del Negocio / Importadora</label>
+                    <input type="text" id="edit-user-business" required
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">WhatsApp Internacional (Ej. 59171234567)</label>
+                    <input type="tel" id="edit-user-whatsapp" placeholder="59171234567"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Correo Electrónico</label>
+                    <input type="email" id="edit-user-email" required
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Plan SaaS</label>
+                        <select id="edit-user-plan"
+                            class="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <option value="free">Plan Freemium</option>
+                            <option value="pro_50bs">Plan Comercio Pro (65 Bs)</option>
+                            <option value="campana">Pase Campaña</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Flyers Generados</label>
+                        <input type="number" id="edit-user-flyers" min="0"
+                            class="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-2 pt-2">
+                    <button type="button" onclick="closeEditUserModal()"
+                        class="px-4 py-2 rounded-xl text-xs font-bold bg-gray-800 hover:bg-gray-700 text-gray-300 transition">Cancelar</button>
+                    <button type="submit" id="btn-save-edit-user"
+                        class="px-4 py-2 rounded-xl text-xs font-bold bg-sky-500 hover:bg-sky-400 text-gray-950 transition">Guardar
+                        Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="text-center py-6 text-xs text-gray-500 border-t border-gray-900">
+        CataliA Bolivia · CRM Gerencial y Control Financiero
+    </footer>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/session.js"></script>
+    <script src="/static/js/pdf-reports.js"></script>
+    <script src="/static/js/admin-page.js"></script>
+</body>
+
+</html>

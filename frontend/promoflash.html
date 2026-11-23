@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio PromoFlash Pro - CataliA Bolivia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body
+    class="bg-gray-950 text-gray-100 min-h-screen flex flex-col justify-between selection:bg-purple-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="bg-black/90 backdrop-blur-md border-b border-purple-900/40 p-4 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-black text-purple-400">CataliA <span class="text-green-400">Studio
+                        Pro</span></span>
+                <span
+                    class="hidden sm:inline-block text-[11px] bg-purple-950 text-purple-300 border border-purple-700/50 px-2.5 py-0.5 rounded-full font-semibold">Multicanal
+                    IA</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="catalog.html"
+                    class="bg-gray-900 hover:bg-gray-800 text-emerald-300 border border-gray-700 text-xs font-bold px-3.5 py-2.5 rounded-xl transition">
+                    Ver Catálogo
+                </a>
+                <a href="dashboard.html"
+                    class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-lg shadow-purple-900/40">
+                    ← Volver al CRM
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full grid lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Panel Izquierdo: Motor Creativo IA + Controles -->
+        <div class="lg:col-span-7 space-y-6">
+            <div>
+                <span
+                    class="bg-emerald-500/20 text-emerald-300 border border-emerald-600/50 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider">⚡
+                    Laboratorio Creativo con IA</span>
+                <h1 class="text-3xl font-black text-white mt-3">Estudio Publicitario con IA</h1>
+                <p class="text-gray-400 text-sm mt-1">Pide más ideas a la IA, indícale correcciones y elige opciones
+                    separadas para WhatsApp, Instagram, Facebook y otras relaciones.</p>
+            </div>
+
+            <!-- 1. Pedir Más Ideas y Correcciones a la IA -->
+            <div class="bg-gray-900/90 border border-purple-800/40 p-5 rounded-3xl space-y-3 shadow-xl">
+                <label class="block text-xs font-bold text-purple-300 uppercase tracking-wide">✨ Pedir Más Ideas o
+                    Correcciones a la IA</label>
+                <div class="flex flex-col sm:flex-row gap-2.5">
+                    <input type="text" id="ai-instruction-input"
+                        placeholder="Ej: hazlo más divertido, enfocado en jóvenes, sin sonar vendedor, o resalta entrega rápida..."
+                        class="flex-1 bg-black/60 border border-gray-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-purple-500 focus:outline-none">
+                    <button type="button" onclick="requestMoreAiIdeas()" id="btn-more-ideas"
+                        class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-black px-4 py-2.5 rounded-xl transition shadow-lg shadow-purple-900/40 whitespace-nowrap">
+                        ✨ Pedir Más Ideas a la IA
+                    </button>
+                </div>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                    <button type="button" onclick="quickCorrection('Hazlo más directo y corto')"
+                        class="text-[11px] bg-black/50 hover:bg-gray-800 text-gray-300 border border-gray-800 px-2.5 py-1 rounded-lg transition">Más
+                        corto y directo</button>
+                    <button type="button" onclick="quickCorrection('Dale un tono más cercano y ocurrente')"
+                        class="text-[11px] bg-black/50 hover:bg-gray-800 text-gray-300 border border-gray-800 px-2.5 py-1 rounded-lg transition">Más
+                        ocurrente</button>
+                    <button type="button" onclick="quickCorrection('Enfocado en cerrar ventas rápido')"
+                        class="text-[11px] bg-black/50 hover:bg-gray-800 text-gray-300 border border-gray-800 px-2.5 py-1 rounded-lg transition">Enfoque
+                        cierre rápido</button>
+                    <button type="button" onclick="quickCorrection('Suave y confiable, sin presionar')"
+                        class="text-[11px] bg-black/50 hover:bg-gray-800 text-gray-300 border border-gray-800 px-2.5 py-1 rounded-lg transition">Tono
+                        confiable</button>
+                </div>
+            </div>
+
+            <!-- 2. Opciones por Canal y Relación Comercial -->
+            <div class="bg-gray-900/90 border border-gray-800 p-5 rounded-3xl space-y-4 shadow-xl">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <label class="block text-xs font-bold text-cyan-400 uppercase tracking-wide">🎯 Opciones por Canal y
+                        Relación (IA)</label>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button type="button" onclick="setChannelTab('whatsapp')" id="tab-whatsapp"
+                            class="ch-tab px-3 py-1 rounded-xl text-xs font-bold border border-emerald-500 bg-emerald-950/50 text-emerald-300 transition">WhatsApp</button>
+                        <button type="button" onclick="setChannelTab('instagram')" id="tab-instagram"
+                            class="ch-tab px-3 py-1 rounded-xl text-xs font-bold border border-gray-800 hover:border-purple-500 bg-black/40 text-gray-300 transition">Instagram</button>
+                        <button type="button" onclick="setChannelTab('facebook')" id="tab-facebook"
+                            class="ch-tab px-3 py-1 rounded-xl text-xs font-bold border border-gray-800 hover:border-purple-500 bg-black/40 text-gray-300 transition">Facebook</button>
+                        <button type="button" onclick="setChannelTab('otras_relaciones')" id="tab-otras_relaciones"
+                            class="ch-tab px-3 py-1 rounded-xl text-xs font-bold border border-gray-800 hover:border-purple-500 bg-black/40 text-gray-300 transition">Otras
+                            Relaciones</button>
+                    </div>
+                </div>
+
+                <div id="channel-options-container" class="space-y-2">
+                    <!-- JS -->
+                </div>
+            </div>
+
+            <!-- 3. Titulares para el Flyer -->
+            <div class="bg-gray-900/90 border border-gray-800 p-5 rounded-3xl space-y-3 shadow-xl">
+                <label class="block text-xs font-bold text-green-400 uppercase tracking-wide">✨ Titulares para el Flyer
+                    (clic para aplicar)</label>
+                <div id="slogans-container" class="grid sm:grid-cols-2 gap-2">
+                    <!-- JS -->
+                </div>
+            </div>
+
+            <!-- 4. Estructura y Formato -->
+            <div class="bg-gray-900/90 border border-gray-800 p-5 rounded-3xl space-y-4 shadow-xl">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <label class="block text-xs font-bold text-purple-400 uppercase tracking-wide">📐 Estructura y
+                        Formato</label>
+                    <div class="flex gap-1.5">
+                        <button type="button" onclick="setFormat('flyer')" id="fmt-flyer"
+                            class="fmt-btn px-3 py-1 rounded-xl text-xs font-bold border border-purple-500 bg-purple-950/50 text-white transition">Flyer</button>
+                        <button type="button" onclick="setFormat('estado')" id="fmt-estado"
+                            class="fmt-btn px-3 py-1 rounded-xl text-xs font-bold border border-gray-800 hover:border-purple-500 bg-black/40 text-gray-300 transition">Estado</button>
+                        <button type="button" onclick="setFormat('cuadrado')" id="fmt-cuadrado"
+                            class="fmt-btn px-3 py-1 rounded-xl text-xs font-bold border border-gray-800 hover:border-purple-500 bg-black/40 text-gray-300 transition">1:1</button>
+                    </div>
+                </div>
+
+                <div id="structures-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <button type="button" onclick="setStructure('estilo_1')" id="btn-estilo_1"
+                        class="p-3 rounded-2xl border border-purple-500 bg-purple-950/40 transition text-left">
+                        <span class="text-xs font-bold text-white block">1. Titular Superior</span>
+                        <span class="text-[10px] text-gray-400">Gancho arriba + foto</span>
+                    </button>
+                    <button type="button" onclick="setStructure('estilo_2')" id="btn-estilo_2"
+                        class="p-3 rounded-2xl border border-gray-800 hover:border-purple-500 transition text-left bg-black/40">
+                        <span class="text-xs font-bold text-white block">2. Editorial Limpio</span>
+                        <span class="text-[10px] text-gray-400">Ordenado y directo</span>
+                    </button>
+                    <button type="button" onclick="setStructure('estilo_3')" id="btn-estilo_3"
+                        class="p-3 rounded-2xl border border-gray-800 hover:border-purple-500 transition text-left bg-black/40">
+                        <span class="text-xs font-bold text-white block">3. Precio en Foto</span>
+                        <span class="text-[10px] text-gray-400">Etiqueta destacada</span>
+                    </button>
+                    <button type="button" onclick="setStructure('estilo_4')" id="btn-estilo_4"
+                        class="p-3 rounded-2xl border border-gray-800 hover:border-purple-500 transition text-left bg-black/40">
+                        <span class="text-xs font-bold text-white block">4. Barra Lateral</span>
+                        <span class="text-[10px] text-gray-400">Acento vertical</span>
+                    </button>
+                    <button type="button" onclick="setStructure('estilo_5')" id="btn-estilo_5"
+                        class="p-3 rounded-2xl border border-gray-800 hover:border-purple-500 transition text-left bg-black/40">
+                        <span class="text-xs font-bold text-white block">5. Cierre Rápido</span>
+                        <span class="text-[10px] text-gray-400">Producto + llamada</span>
+                    </button>
+                    <button type="button" onclick="setStructure('estilo_6')" id="btn-estilo_6"
+                        class="p-3 rounded-2xl border border-gray-800 hover:border-purple-500 transition text-left bg-black/40">
+                        <span class="text-xs font-bold text-white block">6. Vitrina Abierta</span>
+                        <span class="text-[10px] text-gray-400">Texto + detalle</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5. Edición Manual y Colores -->
+            <div class="bg-gray-900/90 border border-gray-800 p-6 rounded-3xl space-y-4 shadow-2xl">
+                <div class="grid sm:grid-cols-2 gap-4 pb-3 border-b border-gray-800">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Negocio / Marca</label>
+                        <input type="text" id="flyer-business" oninput="updateFlyerPreview()" value="Mi Negocio"
+                            class="w-full bg-black/50 border border-gray-700 rounded-xl p-2.5 text-xs text-white focus:border-purple-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">WhatsApp 📱</label>
+                        <input type="text" id="flyer-whatsapp" oninput="updateFlyerPreview()" value="70000000"
+                            class="w-full bg-black/50 border border-gray-700 rounded-xl p-2.5 text-xs text-white focus:border-purple-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-3 gap-3">
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs text-gray-400 mb-1">Producto</label>
+                        <input type="text" id="flyer-name" oninput="updateFlyerPreview()"
+                            class="w-full bg-black/50 border border-gray-700 rounded-xl p-3 text-sm text-white focus:border-purple-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Precio (Bs)</label>
+                        <input type="number" id="flyer-price" oninput="updateFlyerPreview()"
+                            class="w-full bg-black/50 border border-gray-700 rounded-xl p-3 text-sm text-white focus:border-purple-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Titular Activo</label>
+                        <input type="text" id="flyer-urgency" oninput="updateFlyerPreview()"
+                            class="w-full bg-black/50 border border-gray-700 rounded-xl p-2.5 text-sm text-white font-bold focus:border-purple-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Sello / Etiqueta</label>
+                        <input type="text" id="flyer-badge" oninput="updateFlyerPreview()" value="WhatsApp Directo"
+                            class="w-full bg-black/50 border border-gray-700 rounded-xl p-2.5 text-sm text-white focus:border-purple-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Llamado a la Acción (CTA)</label>
+                    <input type="text" id="flyer-cta" oninput="updateFlyerPreview()"
+                        value="Escríbenos y aparta el tuyo hoy"
+                        class="w-full bg-black/50 border border-gray-700 rounded-xl p-2.5 text-xs text-white focus:border-purple-500 focus:outline-none">
+                </div>
+
+                <div class="space-y-2 pt-2 border-t border-gray-800">
+                    <span class="block text-xs text-emerald-400 font-semibold">Paletas sugeridas por la IA:</span>
+                    <div id="ai-palettes-container" class="flex flex-wrap gap-2">
+                        <!-- JS -->
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 items-end">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Fondo</label>
+                        <input type="color" id="picker-bg" value="#09090b" onchange="applyCustomColors()"
+                            class="w-full h-10 bg-transparent cursor-pointer rounded-lg border border-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Acento</label>
+                        <input type="color" id="picker-accent" value="#10b981" onchange="updateFlyerPreview()"
+                            class="w-full h-10 bg-transparent cursor-pointer rounded-lg border border-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Encuadre Foto</label>
+                        <select id="img-fit-mode" onchange="updateFlyerPreview()"
+                            class="w-full h-10 bg-black/60 border border-gray-700 rounded-lg px-2 text-xs text-white focus:border-purple-500 focus:outline-none">
+                            <option value="object-cover">Cubrir</option>
+                            <option value="object-contain">Ajustar completo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Cambiar Imagen del Producto</label>
+                    <input type="file" id="flyer-img-input" accept="image/*" onchange="loadNewImage(event)"
+                        class="w-full bg-black/50 border border-gray-700 rounded-xl p-2 text-xs text-gray-400 file:mr-3 file:py-1 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-purple-600 file:text-white hover:file:bg-purple-700">
+                </div>
+
+                <button onclick="downloadFlyer()" id="btn-download"
+                    class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-4 px-4 rounded-xl text-sm transition shadow-xl shadow-green-900/30 flex justify-center items-center space-x-2">
+                    <span>⚡ Descargar Publicidad Pro (PNG)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Vista Previa + Texto Listo para Copiar -->
+        <div class="lg:col-span-5 flex flex-col items-center lg:sticky lg:top-20 space-y-4">
+            <div id="flyer-card"
+                class="w-[380px] h-[600px] rounded-[2.5rem] p-7 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] relative overflow-hidden select-none transition-all duration-300 border border-white/15"
+                style="background: linear-gradient(145deg, #09090b, #18181b);">
+                <div id="flyer-layout-content" class="flex flex-col h-full justify-between z-10">
+                    <!-- Dinámico -->
+                </div>
+                <div
+                    class="absolute -top-24 -right-24 w-52 h-52 bg-purple-600/20 rounded-full blur-3xl pointer-events-none">
+                </div>
+                <div
+                    class="absolute -bottom-24 -left-24 w-52 h-52 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none">
+                </div>
+            </div>
+
+            <div class="w-full max-w-[380px] bg-gray-900/90 border border-gray-800 p-4 rounded-2xl space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-[11px] font-bold text-emerald-400 uppercase">📋 Texto Seleccionado para Publicar /
+                        Enviar</span>
+                    <button type="button" onclick="copySelectedPitch()" id="btn-copy-pitch"
+                        class="text-[11px] bg-gray-800 hover:bg-gray-700 text-white px-2.5 py-1 rounded-lg transition">Copiar</button>
+                </div>
+                <p id="selected-channel-pitch" class="text-xs text-gray-300 leading-relaxed"></p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-gray-600 border-t border-gray-900">
+        CataliA Bolivia · Estudio PromoFlash Multicanal IA
+    </footer>
+
+    <script>
+        const API_URL = "/api";
+        let currentUser = null;
+        let currentStructure = 'estilo_1';
+        let currentFormat = 'flyer';
+        let currentChannel = 'whatsapp';
+        const FALLBACK_FLYER_IMG = "data:image/svg+xml;utf8," + encodeURIComponent(
+            `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+                <rect width="400" height="400" fill="#231038"/>
+                <text x="50%" y="48%" dominant-baseline="middle" text-anchor="middle" fill="#e9d5ff" font-family="Arial, sans-serif" font-size="24" font-weight="bold">Producto CataliA</text>
+                <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle" fill="#34d399" font-family="Arial, sans-serif" font-size="16">Bolivia</text>
+            </svg>`
+        );
+        let tempImgSrc = FALLBACK_FLYER_IMG;
+
+        let studioBundle = {
+            headlines: [
+                "¡Llévalo hoy a precio directo! Escríbenos y aparta el tuyo",
+                "Una opción práctica que sí resuelve tu día",
+                "Unidades limitadas: pídelo antes que se agoten",
+                "Calidad y buen trato en un solo lugar"
+            ],
+            channels: {
+                whatsapp: {
+                    flyer_cta: "Escríbenos y aparta el tuyo hoy",
+                    badge: "WhatsApp",
+                    options: [
+                        "¡Hola! Qué tal, tenemos este producto disponible. ¿Te gustaría ver detalles o reservar uno?",
+                        "Estado WhatsApp: ¡Disponible hoy! Escríbenos y te respondemos al instante.",
+                        "Seguimiento: si aún lo estás evaluando, avísanos y te ayudamos a elegir sin compromiso."
+                    ]
+                },
+                instagram: {
+                    flyer_cta: "Escríbenos al DM y pide el tuyo",
+                    badge: "Instagram",
+                    options: [
+                        "Post/Reel: muestra el producto en uso los primeros segundos y cierra con una pregunta directa.",
+                        "Historia: encuesta rápida para ver qué estilo o uso prefieren tus seguidores.",
+                        "Carrusel: enfocado en estética, detalle del producto y cierre simple."
+                    ]
+                },
+                facebook: {
+                    flyer_cta: "Comenta o envía mensaje",
+                    badge: "Facebook",
+                    options: [
+                        "Publicación clara: detalla qué incluye, precio y cómo coordinar entrega.",
+                        "Grupos/Comunidad: tono amable y directo, fácil de leer desde el celular.",
+                        "Cierre de confianza: destaca atención cercana y disponibilidad real."
+                    ]
+                },
+                otras_relaciones: {
+                    flyer_cta: "Pide el tuyo o consúltanos",
+                    badge: "Otras Relaciones",
+                    options: [
+                        "TikTok: idea rápida y visual sin rodeos, mostrando el producto en acción.",
+                        "Clientes frecuentes: mensaje de recomendación personal para quienes ya compraron antes.",
+                        "Objeciones/Dudas: responde con claridad sobre utilidad y entrega en vez de bajar precio de entrada."
+                    ]
+                }
+            },
+            palettes: [
+                { name: "Esmeralda Nocturno", bg: "#09090b", accent: "#10b981" },
+                { name: "Índigo & Ámbar", bg: "#1E1B4B", accent: "#F59E0B" },
+                { name: "Azul Tech", bg: "#0F172A", accent: "#38BDF8" }
+            ]
+        };
+
+        window.onload = () => {
+            const storedUser = localStorage.getItem('catalia_user');
+            if (storedUser) {
+                try {
+                    currentUser = JSON.parse(storedUser);
+                    if (currentUser?.business_name) document.getElementById('flyer-business').value = currentUser.business_name;
+                    if (currentUser?.phone || currentUser?.whatsapp) {
+                        document.getElementById('flyer-whatsapp').value = currentUser.phone || currentUser.whatsapp;
+                    }
+                } catch (e) {
+                    currentUser = null;
+                }
+            }
+
+            const rawProduct = localStorage.getItem('catalia_selected_product');
+            if (rawProduct) {
+                try {
+                    const p = JSON.parse(rawProduct);
+                    document.getElementById('flyer-name').value = p.name || "Producto Destacado";
+                    document.getElementById('flyer-price').value = p.price ?? 120;
+                    if (p.image_data) tempImgSrc = p.image_data;
+                    if (p.color_sugerido_fondo) document.getElementById('picker-bg').value = p.color_sugerido_fondo;
+                    if (p.color_sugerido_acento) document.getElementById('picker-accent').value = p.color_sugerido_acento;
+
+                    if (Array.isArray(p.urgency_options) && p.urgency_options.length) {
+                        studioBundle.headlines = p.urgency_options;
+                    } else if (p.urgency_phrase && p.urgency_phrase.includes('||')) {
+                        studioBundle.headlines = p.urgency_phrase.split('||').map(s => s.trim()).filter(Boolean);
+                    }
+                    if (Array.isArray(p.palette_options) && p.palette_options.length) {
+                        studioBundle.palettes = p.palette_options;
+                    }
+                    if (p.whatsapp_pitch) {
+                        studioBundle.channels.whatsapp.options[0] = p.whatsapp_pitch;
+                    }
+                } catch (e) {
+                    document.getElementById('flyer-name').value = "Producto Destacado";
+                    document.getElementById('flyer-price').value = "120";
+                }
+            } else {
+                document.getElementById('flyer-name').value = "Producto Destacado";
+                document.getElementById('flyer-price').value = "120";
+            }
+
+            renderAllFromBundle();
+            setChannelTab('whatsapp');
+            setFormat('flyer');
+            setStructure('estilo_1');
+        };
+
+        function quickCorrection(text) {
+            document.getElementById('ai-instruction-input').value = text;
+            requestMoreAiIdeas();
+        }
+
+        async function requestMoreAiIdeas() {
+            const btn = document.getElementById('btn-more-ideas');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Pensando con IA...";
+
+            const payload = {
+                name: document.getElementById('flyer-name').value || "Producto Destacado",
+                price: parseFloat(document.getElementById('flyer-price').value || "0") || 0,
+                currency: "Bs",
+                business_name: document.getElementById('flyer-business').value || "Mi Negocio",
+                instruction: document.getElementById('ai-instruction-input').value || "",
+                current_headline: document.getElementById('flyer-urgency').value || "",
+                image_data: tempImgSrc.startsWith("data:image/") ? tempImgSrc : null
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/ai/creative-studio`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error("Error en respuesta IA");
+                const data = await res.json();
+
+                if (Array.isArray(data.headlines) && data.headlines.length) {
+                    studioBundle.headlines = data.headlines;
+                }
+                if (data.channels && typeof data.channels === "object") {
+                    studioBundle.channels = { ...studioBundle.channels, ...data.channels };
+                }
+                if (Array.isArray(data.palettes) && data.palettes.length) {
+                    studioBundle.palettes = data.palettes;
+                }
+
+                renderAllFromBundle();
+                setChannelTab(currentChannel);
+            } catch (err) {
+                console.error(err);
+                alert("No se pudo conectar con la IA en este momento. Revisa que el backend esté corriendo.");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        }
+
+        function renderAllFromBundle() {
+            renderSlogans(studioBundle.headlines);
+            if (studioBundle.headlines.length) {
+                selectSlogan(studioBundle.headlines[0]);
+            }
+
+            const palBox = document.getElementById("ai-palettes-container");
+            palBox.innerHTML = "";
+            studioBundle.palettes.forEach(pal => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "px-3 py-1.5 rounded-xl text-xs bg-black/60 border border-gray-700 hover:border-emerald-400 flex items-center gap-2 transition";
+
+                const bgSwatch = document.createElement("span");
+                bgSwatch.className = "w-3 h-3 rounded-full border border-white/30";
+                bgSwatch.style.background = pal.bg || "#09090b";
+
+                const accentSwatch = document.createElement("span");
+                accentSwatch.className = "w-3 h-3 rounded-full";
+                accentSwatch.style.background = pal.accent || "#10b981";
+
+                const labelSpan = document.createElement("span");
+                labelSpan.className = "text-gray-200 font-medium";
+                labelSpan.textContent = pal.name || "Paleta IA";
+
+                btn.append(bgSwatch, accentSwatch, labelSpan);
+                btn.addEventListener("click", () => applyPalette(pal.bg, pal.accent));
+                palBox.appendChild(btn);
+            });
+        }
+
+        function setChannelTab(channelKey) {
+            currentChannel = channelKey;
+            document.querySelectorAll(".ch-tab").forEach(btn => {
+                btn.className = "ch-tab px-3 py-1 rounded-xl text-xs font-bold border border-gray-800 hover:border-purple-500 bg-black/40 text-gray-300 transition";
+            });
+            const active = document.getElementById(`tab-${channelKey}`);
+            if (active) {
+                active.className = "ch-tab px-3 py-1 rounded-xl text-xs font-bold border border-emerald-500 bg-emerald-950/50 text-emerald-300 transition";
+            }
+
+            const chData = studioBundle.channels[channelKey] || studioBundle.channels.whatsapp;
+            if (chData.flyer_cta) document.getElementById("flyer-cta").value = chData.flyer_cta;
+            if (chData.badge) document.getElementById("flyer-badge").value = chData.badge;
+
+            const opts = Array.isArray(chData.options) ? chData.options : [];
+            const box = document.getElementById("channel-options-container");
+            box.innerHTML = "";
+
+            opts.forEach((opt, idx) => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "w-full text-left p-3 rounded-2xl bg-black/50 hover:bg-cyan-950/30 border border-gray-800 hover:border-cyan-500/60 transition";
+
+                const titleSpan = document.createElement("span");
+                titleSpan.className = "text-[10px] font-bold text-cyan-400 uppercase block mb-0.5";
+                titleSpan.textContent = `Opción #${idx + 1} · Clic para usar y copiar`;
+
+                const textSpan = document.createElement("span");
+                textSpan.className = "text-xs text-gray-200 block";
+                textSpan.textContent = opt;
+
+                btn.append(titleSpan, textSpan);
+                btn.addEventListener("click", () => {
+                    useChannelOption(opt);
+                    btn.classList.add("border-cyan-400");
+                    setTimeout(() => btn.classList.remove("border-cyan-400"), 800);
+                });
+                box.appendChild(btn);
+            });
+
+            if (opts.length) {
+                document.getElementById("selected-channel-pitch").textContent = opts[0];
+            }
+            updateFlyerPreview();
+        }
+
+        function useChannelOption(text) {
+            const pitchEl = document.getElementById("selected-channel-pitch");
+            if (pitchEl) pitchEl.textContent = text;
+            navigator.clipboard?.writeText(text).catch(() => {});
+        }
+
+        function renderSlogans(slogans) {
+            const container = document.getElementById("slogans-container");
+            container.innerHTML = "";
+
+            slogans.forEach((slogan, index) => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "text-left p-3 rounded-xl bg-black/50 hover:bg-purple-950/40 border border-gray-800 hover:border-purple-500 transition flex flex-col gap-1";
+
+                const labelSpan = document.createElement("span");
+                labelSpan.className = "text-[10px] font-bold text-green-400 uppercase tracking-wider";
+                labelSpan.textContent = `Titular #${index + 1}`;
+
+                const textSpan = document.createElement("span");
+                textSpan.className = "text-xs text-gray-200 font-medium";
+                textSpan.textContent = `"${slogan}"`;
+
+                btn.append(labelSpan, textSpan);
+                btn.addEventListener("click", () => selectSlogan(slogan));
+                container.appendChild(btn);
+            });
+        }
+
+        function selectSlogan(text) {
+            document.getElementById('flyer-urgency').value = text;
+            updateFlyerPreview();
+        }
+
+        function applyPalette(bg, accent) {
+            document.getElementById('picker-bg').value = bg;
+            document.getElementById('picker-accent').value = accent;
+            updateFlyerPreview();
+        }
+
+        function setFormat(fmt) {
+            currentFormat = fmt;
+            document.querySelectorAll('.fmt-btn').forEach(btn => {
+                btn.className = "fmt-btn px-3 py-1 rounded-xl text-xs font-bold border border-gray-800 hover:border-purple-500 bg-black/40 text-gray-300 transition";
+            });
+            const active = document.getElementById(`fmt-${fmt}`);
+            if (active) active.className = "fmt-btn px-3 py-1 rounded-xl text-xs font-bold border border-purple-500 bg-purple-950/50 text-white transition";
+
+            const card = document.getElementById('flyer-card');
+            if (fmt === 'estado') {
+                card.className = "w-[360px] h-[620px] rounded-[2.5rem] p-7 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] relative overflow-hidden select-none transition-all duration-300 border border-white/15";
+            } else if (fmt === 'cuadrado') {
+                card.className = "w-[400px] h-[400px] rounded-[2rem] p-5 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] relative overflow-hidden select-none transition-all duration-300 border border-white/15";
+            } else {
+                card.className = "w-[380px] h-[600px] rounded-[2.5rem] p-7 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] relative overflow-hidden select-none transition-all duration-300 border border-white/15";
+            }
+            updateFlyerPreview();
+        }
+
+        function setStructure(id) {
+            currentStructure = id;
+            document.querySelectorAll('#structures-container button').forEach(b => b.classList.remove('border-purple-500', 'bg-purple-950/40'));
+            const activeBtn = document.getElementById(`btn-${id}`);
+            if (activeBtn) activeBtn.classList.add('border-purple-500', 'bg-purple-950/40');
+            updateFlyerPreview();
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        function updateFlyerPreview() {
+            const name = document.getElementById('flyer-name').value || "Producto";
+            const price = document.getElementById('flyer-price').value || "0";
+            const currency = "Bs";
+            const urgency = document.getElementById('flyer-urgency').value || "¡OFERTA!";
+            const badge = document.getElementById('flyer-badge').value || "WhatsApp";
+            const cta = document.getElementById('flyer-cta').value || "Escríbenos y aparta el tuyo hoy";
+            const business = document.getElementById('flyer-business').value || "Mi Negocio";
+            const whatsapp = document.getElementById('flyer-whatsapp').value || "70000000";
+            const imgFit = document.getElementById('img-fit-mode')?.value || "object-cover";
+
+            const currentImg = document.getElementById('preview-img') ? document.getElementById('preview-img').src : tempImgSrc;
+            tempImgSrc = currentImg;
+
+            const eName = escapeHtml(name);
+            const ePrice = escapeHtml(price);
+            const eUrgency = escapeHtml(urgency);
+            const eBadge = escapeHtml(badge);
+            const eCta = escapeHtml(cta);
+            const eBusiness = escapeHtml(business);
+            const eWhatsapp = escapeHtml(whatsapp);
+            const eImg = escapeHtml(currentImg);
+
+            const accentColor = document.getElementById('picker-accent').value;
+            const container = document.getElementById('flyer-layout-content');
+            const isCompact = currentFormat === 'cuadrado';
+            const imgHeight = isCompact ? 'h-32' : 'h-48';
+            const titleSize = isCompact ? 'text-base' : 'text-xl';
+
+            if (currentStructure === 'estilo_1') {
+                container.innerHTML = `
+                    <div class="text-center space-y-1.5">
+                        <span style="background-color: ${accentColor}; color: #000;" class="font-extrabold text-[10px] uppercase tracking-widest px-3 py-0.5 rounded-full shadow inline-block">${eBadge}</span>
+                        <h2 class="${titleSize} font-black text-white tracking-tight leading-snug">${eUrgency}</h2>
+                    </div>
+                    <div class="my-1.5 bg-black/60 border border-white/15 rounded-3xl ${imgHeight} overflow-hidden flex items-center justify-center relative shadow-inner">
+                        <img id="preview-img" src="${eImg}" alt="${eName}" class="w-full h-full ${imgFit}">
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center bg-black/80 p-3 rounded-2xl border border-white/10">
+                            <div>
+                                <span class="text-[9px] text-gray-400 block uppercase font-bold">Precio</span>
+                                <span style="color: ${accentColor};" class="${isCompact ? 'text-lg' : 'text-2xl'} font-black">${ePrice} ${currency}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs font-bold text-white block">${eBusiness}</span>
+                                <span class="text-[10px] text-gray-400">${eName}</span>
+                            </div>
+                        </div>
+                        <div style="background-color: ${accentColor}; color: #000;" class="w-full font-black text-xs py-2.5 px-3 rounded-xl text-center shadow truncate">
+                            💬 ${eCta} · ${eWhatsapp}
+                        </div>
+                    </div>
+                `;
+            } else if (currentStructure === 'estilo_2') {
+                container.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] font-bold text-white uppercase tracking-widest">${eBusiness}</span>
+                        <span style="background-color: ${accentColor}; color: #000;" class="text-[9px] font-black px-2.5 py-0.5 rounded">${eBadge}</span>
+                    </div>
+                    <div class="my-1 bg-black/50 border border-white/15 rounded-3xl ${imgHeight} overflow-hidden flex items-center justify-center relative shadow-inner">
+                        <img id="preview-img" src="${eImg}" alt="${eName}" class="w-full h-full ${imgFit}">
+                    </div>
+                    <div class="space-y-1 text-center">
+                        <h3 class="${isCompact ? 'text-sm' : 'text-lg'} font-black text-white leading-tight">${eUrgency}</h3>
+                        <p class="text-xs text-gray-300">${eName}</p>
+                    </div>
+                    <div class="bg-black/90 p-3 rounded-2xl border border-white/15 flex justify-between items-center gap-2">
+                        <span style="color: ${accentColor};" class="${isCompact ? 'text-lg' : 'text-2xl'} font-black">${ePrice} ${currency}</span>
+                        <span style="background-color: ${accentColor}; color: #000;" class="font-bold text-[11px] py-1.5 px-3 rounded-xl">📱 ${eWhatsapp}</span>
+                    </div>
+                `;
+            } else if (currentStructure === 'estilo_3') {
+                container.innerHTML = `
+                    <div class="text-center space-y-1">
+                        <span style="color: ${accentColor};" class="text-[10px] font-black uppercase tracking-widest bg-black/60 border border-white/10 px-3 py-0.5 rounded-full">${eBusiness}</span>
+                        <h2 class="${titleSize} font-black text-white">${eName}</h2>
+                    </div>
+                    <div class="my-1 bg-black/70 border-2 rounded-3xl ${imgHeight} overflow-hidden flex items-center justify-center relative shadow-2xl" style="border-color: ${accentColor};">
+                        <img id="preview-img" src="${eImg}" alt="${eName}" class="w-full h-full ${imgFit}">
+                        <span style="background-color: ${accentColor}; color: #000;" class="absolute top-3 left-3 text-[11px] font-black px-2.5 py-1 rounded-lg shadow">${ePrice} ${currency}</span>
+                    </div>
+                    <div class="bg-black/85 p-3 rounded-2xl border border-white/15 space-y-2 text-center">
+                        <p class="text-xs font-bold text-white">"${eUrgency}"</p>
+                        <div style="background-color: ${accentColor}; color: #000;" class="w-full font-black text-xs py-2 rounded-xl truncate px-2">
+                            💬 ${eCta} · ${eWhatsapp}
+                        </div>
+                    </div>
+                `;
+            } else if (currentStructure === 'estilo_4') {
+                container.innerHTML = `
+                    <div class="space-y-1 pl-3" style="border-left: 4px solid ${accentColor};">
+                        <span class="text-[9px] text-gray-400 uppercase tracking-widest block font-bold">${eBusiness} · ${eBadge}</span>
+                        <h2 class="${titleSize} font-black text-white leading-tight">${eUrgency}</h2>
+                    </div>
+                    <div class="my-1 bg-black/60 border border-white/15 rounded-2xl ${imgHeight} overflow-hidden flex items-center justify-center relative">
+                        <img id="preview-img" src="${eImg}" alt="${eName}" class="w-full h-full ${imgFit}">
+                    </div>
+                    <div class="bg-black/90 p-3 rounded-2xl border border-white/15 flex justify-between items-center gap-2">
+                        <div>
+                            <span class="text-[10px] text-gray-400 block">${eName}</span>
+                            <span style="color: ${accentColor};" class="${isCompact ? 'text-lg' : 'text-2xl'} font-black">${ePrice} ${currency}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] text-gray-400 block font-bold truncate max-w-[140px]">${eCta}</span>
+                            <span class="text-xs font-black text-white">📱 ${eWhatsapp}</span>
+                        </div>
+                    </div>
+                `;
+            } else if (currentStructure === 'estilo_5') {
+                container.innerHTML = `
+                    <div class="flex items-center justify-between bg-black/75 border border-white/10 px-3 py-2 rounded-2xl">
+                        <span class="text-xs font-black text-white">${eBusiness}</span>
+                        <span style="background-color: ${accentColor}; color: #000;" class="text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">${eBadge}</span>
+                    </div>
+                    <div class="my-1 bg-black/60 border border-white/15 rounded-2xl ${imgHeight} overflow-hidden flex items-center justify-center relative">
+                        <img id="preview-img" src="${eImg}" alt="${eName}" class="w-full h-full ${imgFit}">
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex items-baseline justify-between gap-2">
+                            <h3 class="text-base font-black text-white truncate">${eName}</h3>
+                            <span style="color: ${accentColor};" class="text-xl font-black">${ePrice} ${currency}</span>
+                        </div>
+                        <p class="text-xs text-gray-200 leading-snug">${eUrgency}</p>
+                    </div>
+                    <div style="background-color: ${accentColor}; color: #000;" class="w-full font-black text-xs py-2.5 px-3 rounded-xl text-center shadow truncate">
+                        ⚡ ${eCta} · ${eWhatsapp}
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="text-center space-y-1">
+                        <span style="color: ${accentColor};" class="text-[10px] font-black uppercase tracking-widest">${eBadge} · ${eBusiness}</span>
+                        <h2 class="${titleSize} font-black text-white leading-tight">${eName}</h2>
+                        <p class="text-[11px] text-gray-300">"${eUrgency}"</p>
+                    </div>
+                    <div class="my-1 bg-black/60 border border-white/15 rounded-3xl ${imgHeight} overflow-hidden flex items-center justify-center relative">
+                        <img id="preview-img" src="${eImg}" alt="${eName}" class="w-full h-full ${imgFit}">
+                    </div>
+                    <div class="bg-black/85 p-3 rounded-2xl border border-white/15 space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] text-gray-400">Precio directo</span>
+                            <span style="color: ${accentColor};" class="text-xl font-black">${ePrice} ${currency}</span>
+                        </div>
+                        <div style="background-color: ${accentColor}; color: #000;" class="w-full font-black text-xs py-2 rounded-xl text-center truncate px-2">
+                            💬 ${eCta} (${eWhatsapp})
+                        </div>
+                    </div>
+                `;
+            }
+
+            const imgEl = document.getElementById('preview-img');
+            imgEl?.addEventListener('error', () => {
+                if (imgEl.src !== FALLBACK_FLYER_IMG) {
+                    imgEl.src = FALLBACK_FLYER_IMG;
+                    tempImgSrc = FALLBACK_FLYER_IMG;
+                }
+            });
+
+            applyCustomColors();
+        }
+
+        function applyCustomColors() {
+            const bg = document.getElementById('picker-bg').value;
+            const card = document.getElementById('flyer-card');
+            card.style.background = `linear-gradient(145deg, ${bg}, #000000)`;
+        }
+
+        function loadNewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    tempImgSrc = e.target.result;
+                    updateFlyerPreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function copySelectedPitch() {
+            const text = document.getElementById('selected-channel-pitch')?.textContent || "";
+            if (!text) return;
+            navigator.clipboard?.writeText(text).catch(() => {});
+            const btn = document.getElementById('btn-copy-pitch');
+            btn.textContent = "¡Copiado!";
+            setTimeout(() => { btn.textContent = "Copiar"; }, 1400);
+        }
+
+        async function downloadFlyer() {
+            const btn = document.getElementById('btn-download');
+            btn.disabled = true;
+            btn.textContent = "Generando Imagen Publicitaria Pro...";
+
+            try {
+                if (currentUser && currentUser.id) {
+                    await fetch(`${API_URL}/flyers/register/${encodeURIComponent(currentUser.id)}`, { method: 'POST' });
+                }
+
+                const card = document.getElementById('flyer-card');
+                const canvas = await html2canvas(card, {
+                    scale: 3,
+                    useCORS: true,
+                    backgroundColor: null
+                });
+
+                const link = document.createElement('a');
+                link.download = `Flyer-${currentChannel}-${currentFormat}-${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+            } catch (err) {
+                console.error("Error generando flyer:", err);
+                alert("No se pudo descargar la imagen.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>⚡ Descargar Publicidad Pro (PNG)</span>`;
+            }
+        }
+    </script>
+</body>
+
+</html>

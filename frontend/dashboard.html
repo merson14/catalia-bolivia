@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Comercial - CataliA Bolivia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-950 text-gray-100 h-dvh overflow-hidden flex">
+
+    <!-- Sidebar Lateral -->
+    <aside class="w-64 h-full bg-black/80 border-r border-purple-900/40 px-5 py-5 flex flex-col justify-between hidden md:flex shrink-0">
+        <div class="space-y-5 overflow-y-auto min-h-0 pr-1">
+            <div>
+                <span class="text-xl font-black text-purple-400">CataliA <span class="text-green-400">CRM</span></span>
+                <p id="user-display-name" class="text-xs text-gray-400 mt-1">Comerciante</p>
+            </div>
+
+            <nav class="space-y-2">
+                <a href="dashboard.html"
+                    class="flex items-center space-x-3 bg-purple-600/20 text-purple-300 border border-purple-500/30 px-4 py-2.5 rounded-xl font-medium text-sm transition">
+                    <span>📦 Inventario & IA</span>
+                </a>
+                <a href="catalog.html" target="_blank"
+                    class="flex items-center space-x-3 text-gray-400 hover:text-white px-4 py-2.5 rounded-xl text-sm transition">
+                    <span>🌐 Catálogo Público</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="space-y-3 pt-4 border-t border-gray-900 shrink-0">
+            <div class="bg-gray-900/80 p-3 rounded-xl border border-gray-800">
+                <span class="text-[10px] text-gray-400 uppercase tracking-widest block">Plan Actual</span>
+                <span id="user-plan-label" class="text-xs font-bold text-emerald-400">Plan Freemium</span>
+            </div>
+            <a href="index.html" onclick="clearAllSessionData();"
+                class="inline-flex items-center text-xs font-medium text-red-400 hover:text-red-300 transition py-0.5">
+                ← Cerrar Sesión
+            </a>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 h-full p-6 md:p-10 overflow-y-auto">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl font-black text-white">Panel de Control Comercial</h1>
+                <p class="text-gray-400 text-sm mt-1">Digitaliza productos con IA y gestiona tus estrategias de venta en
+                    Bolivia.</p>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="exportMerchantCatalogPdf()"
+                    class="bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-lg shadow-purple-900/30 flex items-center space-x-1.5">
+                    <span>📄 Descargar Catálogo PDF</span>
+                </button>
+                <a href="catalog.html" target="_blank"
+                    class="bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-lg shadow-emerald-900/30 flex items-center space-x-2">
+                    <span>Ver Catálogo Público ↗</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Tarjetas KPI Limpias -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            <div class="bg-gray-900/90 border border-gray-800 p-6 rounded-3xl shadow-xl">
+                <span class="text-xs text-gray-400 uppercase tracking-wider font-bold">Productos Digitalizados en
+                    Inventario</span>
+                <div id="kpi-products" class="text-4xl font-black text-white mt-2">0</div>
+            </div>
+            <div class="bg-gray-900/90 border border-gray-800 p-6 rounded-3xl shadow-xl">
+                <span class="text-xs text-gray-400 uppercase tracking-wider font-bold">Banners & Flyers Generados</span>
+                <div id="kpi-flyers" class="text-4xl font-black text-purple-400 mt-2">0</div>
+            </div>
+        </div>
+
+        <!-- Formulario de Nuevo Producto con IA -->
+        <section
+            class="bg-gray-900/90 border border-purple-900/40 p-6 md:p-8 rounded-3xl shadow-2xl mb-10 relative overflow-hidden">
+            <div
+                class="absolute -top-12 -right-12 w-40 h-40 bg-purple-600/10 rounded-full blur-3xl pointer-events-none">
+            </div>
+
+            <h2 class="text-lg font-bold text-white mb-4 flex items-center space-x-2">
+                <span>✨ Nuevo Producto con Asistente IA Avanzado</span>
+            </h2>
+
+            <form id="product-form" onsubmit="handleProductSubmit(event)"
+                class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1.5">Nombre del Producto</label>
+                    <input type="text" id="prod-name" required placeholder="Ej. Carrito de Carga / Zapatillas"
+                        class="w-full bg-black/50 border border-gray-700 rounded-xl p-3 text-sm text-white focus:border-purple-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1.5">Precio (Bs)</label>
+                    <input type="number" id="prod-price" required step="0.01" placeholder="50"
+                        class="w-full bg-black/50 border border-gray-700 rounded-xl p-3 text-sm text-white focus:border-purple-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1.5">Foto del Producto (Opcional)</label>
+                    <input type="file" id="prod-file" accept="image/*"
+                        class="w-full bg-black/50 border border-gray-700 rounded-xl p-2 text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700">
+                </div>
+                <div>
+                    <button type="submit" id="btn-process"
+                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-xl text-sm transition shadow-lg shadow-purple-900/40">
+                        Procesar con IA 🚀
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Tabla de Inventario -->
+        <section class="bg-gray-900/90 border border-gray-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-gray-800 flex justify-between items-center">
+                <h2 class="font-bold text-white">Tu Inventario Digitalizado (CataligiA)</h2>
+                <span class="text-xs text-gray-400">Descripciones y estrategias comerciales generadas por IA</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="bg-black/40 text-[11px] uppercase text-gray-400 border-b border-gray-800 tracking-wider">
+                            <th class="p-4">Producto</th>
+                            <th class="p-4">Categoría IA</th>
+                            <th class="p-4">Descripción & Estrategia Comercial</th>
+                            <th class="p-4">Precio</th>
+                            <th class="p-4 text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-tbody" class="divide-y divide-gray-800/60 text-sm">
+                        <tr>
+                            <td colspan="5" class="p-8 text-center text-gray-500">Cargando inventario...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/session.js"></script>
+    <script src="/static/js/pdf-reports.js"></script>
+    <script src="/static/js/dashboard-page.js"></script>
+</body>
+
+</html>
