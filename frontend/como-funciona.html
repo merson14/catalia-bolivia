@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Cómo funciona? — CataliA Bolivia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #06070d;
+            background-image:
+                radial-gradient(circle at 12% 15%, rgba(147, 51, 234, 0.18), transparent 36%),
+                radial-gradient(circle at 88% 82%, rgba(16, 185, 129, 0.14), transparent 38%);
+        }
+        .glass-panel {
+            background: rgba(15, 17, 28, 0.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+    </style>
+</head>
+
+<body class="text-gray-100 min-h-screen flex flex-col justify-between selection:bg-purple-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="bg-black/60 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center gap-4">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600/30 to-emerald-500/20 border border-purple-500/40 p-1.5 flex items-center justify-center overflow-hidden shadow-lg shadow-purple-950/50 group-hover:scale-105 transition">
+                    <img src="/static/logo-catalia.png" alt="CataliA Bolivia"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        class="w-full h-full object-contain rounded-lg">
+                    <span class="hidden w-full h-full items-center justify-center font-extrabold text-sm text-purple-300">CA</span>
+                </div>
+                <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
+                    CataliA <span class="text-emerald-400">Bolivia</span>
+                </span>
+            </a>
+
+            <nav class="flex items-center gap-2 sm:gap-3">
+                <a href="index.html" class="text-xs font-medium text-gray-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/5 transition">
+                    Inicio
+                </a>
+                <a href="como-funciona.html" class="text-xs font-bold text-purple-300 bg-purple-950/60 border border-purple-500/40 px-3 py-1.5 rounded-lg">
+                    ¿Cómo funciona?
+                </a>
+                <a href="planes.html" class="text-xs font-medium text-gray-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/5 transition">
+                    Planes
+                </a>
+                <a href="index.html?tab=register"
+                    class="text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-gray-950 px-3.5 py-2 rounded-xl transition">
+                    Crear Cuenta
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenido -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-12 flex-grow w-full space-y-14">
+
+        <!-- Hero -->
+        <section class="text-center max-w-3xl mx-auto space-y-4">
+            <span class="inline-flex items-center gap-2 text-xs font-bold text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1 rounded-full">
+                ⚡ Flujo Simple en 4 Pasos
+            </span>
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
+                De tus productos a <span class="bg-gradient-to-r from-purple-400 to-emerald-400 bg-clip-text text-transparent">ventas reales por WhatsApp</span>
+            </h1>
+            <p class="text-gray-400 text-base sm:text-lg leading-relaxed">
+                No necesitas saber diseño ni programación. CataliA organiza tu catálogo, redacta tus textos comerciales con IA y prepara tus flyers en segundos.
+            </p>
+        </section>
+
+        <!-- Pasos detallados -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-panel border border-white/10 rounded-3xl p-6 sm:p-8 space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="w-10 h-10 rounded-2xl bg-purple-500/20 border border-purple-500/40 text-purple-300 font-extrabold flex items-center justify-center">01</span>
+                    <span class="text-xs text-purple-300 font-semibold">Menos de 1 minuto</span>
+                </div>
+                <h2 class="text-xl font-extrabold text-white">Crea tu cuenta y configura tu comercio</h2>
+                <p class="text-sm text-gray-400 leading-relaxed">
+                    Registra el nombre de tu tienda, tu número de WhatsApp de ventas y elige el plan que mejor se adapte a tu etapa (puedes iniciar gratis con el Plan Freemium).
+                </p>
+            </div>
+
+            <div class="glass-panel border border-white/10 rounded-3xl p-6 sm:p-8 space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="w-10 h-10 rounded-2xl bg-fuchsia-500/20 border border-fuchsia-500/40 text-fuchsia-300 font-extrabold flex items-center justify-center">02</span>
+                    <span class="text-xs text-fuchsia-300 font-semibold">Catálogo Digital</span>
+                </div>
+                <h2 class="text-xl font-extrabold text-white">Sube tus productos con foto y precio en Bs</h2>
+                <p class="text-sm text-gray-400 leading-relaxed">
+                    Carga la imagen de cada producto, define su precio y deja que la IA te sugiera descripciones atractivas y frases de urgencia listas para convencer al cliente.
+                </p>
+            </div>
+
+            <div class="glass-panel border border-white/10 rounded-3xl p-6 sm:p-8 space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-extrabold flex items-center justify-center">03</span>
+                    <span class="text-xs text-emerald-300 font-semibold">Estudio PromoFlash IA</span>
+                </div>
+                <h2 class="text-xl font-extrabold text-white">Genera flyers y copys para cada red social</h2>
+                <p class="text-sm text-gray-400 leading-relaxed">
+                    Con un clic abres el Estudio PromoFlash, eliges formato (Flyer, Estado o 1:1), aplicas paletas de color y descargas tu imagen en alta calidad junto con mensajes para WhatsApp, Instagram y Facebook.
+                </p>
+            </div>
+
+            <div class="glass-panel border border-white/10 rounded-3xl p-6 sm:p-8 space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-300 font-extrabold flex items-center justify-center">04</span>
+                    <span class="text-xs text-amber-300 font-semibold">Cierre Directo</span>
+                </div>
+                <h2 class="text-xl font-extrabold text-white">Comparte tu vitrina y recibe pedidos</h2>
+                <p class="text-sm text-gray-400 leading-relaxed">
+                    Tus clientes navegan tu catálogo desde el celular y pulsan el botón de compra para abrir tu WhatsApp con el mensaje del producto ya redactado.
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA Final -->
+        <section class="glass-panel border border-purple-500/30 rounded-3xl p-8 text-center space-y-4">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">¿Listo para digitalizar tu catálogo hoy?</h2>
+            <p class="text-sm text-gray-400 max-w-xl mx-auto">
+                Comienza sin costo con hasta 10 productos y descubre cómo la IA acelera tus ventas diarias.
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 pt-2">
+                <a href="index.html?tab=register&plan=free"
+                    class="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-gray-950 font-extrabold text-sm px-6 py-3.5 rounded-xl transition shadow-lg shadow-emerald-900/30">
+                    Crear mi Cuenta Gratis →
+                </a>
+                <a href="planes.html"
+                    class="bg-white/5 hover:bg-white/10 border border-white/15 text-white font-bold text-sm px-6 py-3.5 rounded-xl transition">
+                    Comparar Planes
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 text-xs text-gray-500 border-t border-white/10 bg-black/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span>CataliA Bolivia · Plataforma SaaS para Comercios</span>
+            <span class="text-gray-600">Catálogo Inteligente · WhatsApp Directo · IA Generativa</span>
+        </div>
+    </footer>
+
+</body>
+
+</html>

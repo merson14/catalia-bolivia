@@ -4,177 +4,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CataliA Bolivia - Acceso y Registro SaaS</title>
+    <title>CataliA Bolivia — Catálogo Inteligente con IA y Ventas por WhatsApp</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #06070d;
+            background-image:
+                radial-gradient(circle at 10% 15%, rgba(147, 51, 234, 0.18), transparent 36%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.14), transparent 38%),
+                radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.12), transparent 48%);
+        }
+
+        .glass-panel {
+            background: rgba(15, 17, 28, 0.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .soft-glow {
+            box-shadow: 0 20px 60px -15px rgba(124, 58, 237, 0.25);
+        }
+    </style>
 </head>
 
-<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col justify-between">
+<body class="text-gray-100 min-h-screen flex flex-col justify-between selection:bg-purple-500 selection:text-white">
 
     <!-- Navbar -->
-    <header class="bg-black/60 backdrop-blur-md border-b border-purple-900/40 p-4">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <span class="text-2xl font-black text-purple-400">CataliA <span class="text-green-400">Bolivia</span></span>
-                <span class="hidden sm:inline-block text-xs bg-purple-950 text-purple-300 border border-purple-800 px-2.5 py-0.5 rounded-full">
-                    Catálogo IA + WhatsApp
-                </span>
-            </div>
-            <span class="text-xs text-gray-400">Impulsa tu comercio en Bolivia y LATAM</span>
+    <header class="bg-black/60 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center gap-4">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600/30 to-emerald-500/20 border border-purple-500/40 p-1.5 flex items-center justify-center overflow-hidden shadow-lg shadow-purple-950/50 group-hover:scale-105 transition">
+                    <img src="/static/logo-catalia.png" alt="CataliA Bolivia"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        class="w-full h-full object-contain rounded-lg">
+                    <span class="hidden w-full h-full items-center justify-center font-extrabold text-sm text-purple-300">CA</span>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
+                            CataliA <span class="text-emerald-400">Bolivia</span>
+                        </span>
+                        <span class="hidden md:inline-flex items-center gap-1.5 text-[11px] font-semibold bg-purple-950/90 text-purple-200 border border-purple-700/50 px-2.5 py-0.5 rounded-full">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            Catálogo IA + WhatsApp
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <nav class="flex items-center gap-2 sm:gap-3">
+                <a href="como-funciona.html" class="text-xs font-medium text-gray-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/5 transition">
+                    ¿Cómo funciona?
+                </a>
+                <a href="planes.html" class="text-xs font-medium text-gray-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/5 transition">
+                    Planes
+                </a>
+                <button type="button" onclick="focusAuth('register')"
+                    class="text-xs font-bold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 px-3.5 py-2 rounded-xl transition cursor-pointer">
+                    Empezar Gratis
+                </button>
+            </nav>
         </div>
     </header>
 
     <!-- Main -->
-    <main class="max-w-6xl mx-auto px-4 py-10 flex-grow w-full grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-grow w-full">
 
-        <!-- Columna Informativa -->
-        <div class="space-y-6">
-            <h1 class="text-4xl sm:text-5xl font-black text-white leading-tight">
-                Tu catálogo inteligente y <span class="text-purple-400">flyers en segundos</span>
-            </h1>
-            <p class="text-gray-400 text-base leading-relaxed">
-                Organiza tus productos, genera descripciones comerciales y frases de urgencia con IA, comparte tu vitrina
-                y recibe pedidos directos por WhatsApp.
-            </p>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4">
-                    <div class="text-emerald-400 font-bold text-sm mb-1">Plan Freemium</div>
-                    <p class="text-gray-400">Ideal para empezar: hasta 10 productos y 2 flyers.</p>
+        <!-- Hero + Tarjeta de Acceso -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+
+            <!-- Columna Izquierda -->
+            <div class="lg:col-span-7 space-y-8 pt-1">
+                <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5 text-xs text-gray-300">
+                    <span class="text-emerald-400 font-bold">🇧🇴 Hecho para comercios en Bolivia</span>
+                    <span class="text-gray-600">•</span>
+                    <span>Sin conocimientos técnicos</span>
                 </div>
-                <div class="bg-gray-900/80 border border-purple-800/60 rounded-2xl p-4">
-                    <div class="text-purple-300 font-bold text-sm mb-1">Comercio Pro (65 Bs)</div>
-                    <p class="text-gray-400">Catálogo ampliado, reportes y más flyers promocionales.</p>
+
+                <div class="space-y-4">
+                    <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold text-white leading-[1.1] tracking-tight">
+                        Vende más con un
+                        <span class="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-emerald-400 bg-clip-text text-transparent">
+                            catálogo inteligente
+                        </span>
+                        y flyers en segundos
+                    </h1>
+                    <p class="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl">
+                        Sube tus productos, deja que la IA redacte descripciones persuasivas y crea diseños listos para
+                        compartir en estados y chats de WhatsApp.
+                    </p>
                 </div>
-                <div class="bg-gray-900/80 border border-amber-700/60 rounded-2xl p-4">
-                    <div class="text-amber-300 font-bold text-sm mb-1">Pase Campaña</div>
-                    <p class="text-gray-400">Máxima visibilidad para temporadas y liquidaciones.</p>
+
+                <!-- 3 Pasos Rápidos -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                    <div class="glass-panel border border-white/10 rounded-2xl p-4 space-y-2">
+                        <div class="w-8 h-8 rounded-xl bg-purple-500/20 border border-purple-500/40 text-purple-300 font-extrabold text-xs flex items-center justify-center">
+                            1
+                        </div>
+                        <h3 class="text-sm font-bold text-white">Registra tus productos</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Agrega foto, precio en Bs y stock en menos de un minuto.</p>
+                    </div>
+
+                    <div class="glass-panel border border-white/10 rounded-2xl p-4 space-y-2">
+                        <div class="w-8 h-8 rounded-xl bg-fuchsia-500/20 border border-fuchsia-500/40 text-fuchsia-300 font-extrabold text-xs flex items-center justify-center">
+                            2
+                        </div>
+                        <h3 class="text-sm font-bold text-white">Crea flyers con IA</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Obtén titulares de venta, colores y piezas listas para redes.</p>
+                    </div>
+
+                    <div class="glass-panel border border-white/10 rounded-2xl p-4 space-y-2">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-extrabold text-xs flex items-center justify-center">
+                            3
+                        </div>
+                        <h3 class="text-sm font-bold text-white">Cierra por WhatsApp</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Tus clientes te escriben directo con el pedido armado.</p>
+                    </div>
+                </div>
+
+                <!-- Planes Interactivos -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Elige un plan (clic para seleccionar)</span>
+                        <a href="planes.html" class="text-xs text-purple-300 hover:text-purple-200 font-semibold">Ver detalles de planes →</a>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
+                        <button type="button" onclick="selectPlanAndRegister('free')"
+                            class="text-left glass-panel border border-white/10 hover:border-emerald-400/70 rounded-2xl p-4 transition group cursor-pointer">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-emerald-400 font-extrabold text-sm">Plan Freemium</span>
+                                <span class="bg-emerald-500/15 text-emerald-300 font-bold px-2 py-0.5 rounded-full text-[11px]">0 Bs</span>
+                            </div>
+                            <p class="text-gray-400 leading-relaxed mb-3">Ideal para probar: hasta 10 productos y 2 flyers promocionales.</p>
+                            <span class="text-[11px] font-bold text-emerald-300 group-hover:underline">Elegir gratis →</span>
+                        </button>
+
+                        <button type="button" onclick="selectPlanAndRegister('pro_50bs')"
+                            class="text-left glass-panel border border-purple-500/50 hover:border-purple-400 rounded-2xl p-4 transition relative overflow-hidden group cursor-pointer soft-glow">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-purple-300 font-extrabold text-sm">Comercio Pro</span>
+                                <span class="bg-purple-500/25 text-purple-200 font-bold px-2 py-0.5 rounded-full text-[11px]">65 Bs/mes</span>
+                            </div>
+                            <p class="text-gray-300 leading-relaxed mb-3">Catálogo ampliado, reportes PDF y más flyers con IA.</p>
+                            <span class="text-[11px] font-bold text-purple-300 group-hover:underline">Seleccionar Pro →</span>
+                        </button>
+
+                        <button type="button" onclick="selectPlanAndRegister('campana')"
+                            class="text-left glass-panel border border-amber-500/40 hover:border-amber-400 rounded-2xl p-4 transition group cursor-pointer">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-amber-300 font-extrabold text-sm">Pase Campaña</span>
+                                <span class="bg-amber-500/15 text-amber-200 font-bold px-2 py-0.5 rounded-full text-[11px]">120 Bs</span>
+                            </div>
+                            <p class="text-gray-400 leading-relaxed mb-3">Máxima visibilidad para temporadas, ferias y liquidaciones.</p>
+                            <span class="text-[11px] font-bold text-amber-300 group-hover:underline">Elegir Campaña →</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Tarjeta de Auth -->
-        <div class="bg-gray-900/90 border border-purple-900/50 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-            <div class="flex border-b border-gray-800 text-sm font-bold">
-                <button id="tab-login" type="button" onclick="switchTab('login')"
-                    class="flex-1 pb-3 text-purple-400 border-b-2 border-purple-400 transition">
-                    Iniciar Sesión
-                </button>
-                <button id="tab-register" type="button" onclick="switchTab('register')"
-                    class="flex-1 pb-3 text-gray-400 hover:text-white transition">
-                    Crear Cuenta
-                </button>
-            </div>
+            <!-- Columna Derecha: Tarjeta de Acceso / Registro -->
+            <div id="auth-card" class="lg:col-span-5">
+                <div class="glass-panel border border-white/15 rounded-3xl p-6 sm:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.85)] space-y-6 relative overflow-hidden">
+                    <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-purple-500 via-fuchsia-500 to-emerald-400"></div>
 
-            <div id="auth-error"
-                class="hidden bg-red-950/80 border border-red-800 text-red-200 text-xs rounded-xl p-3">
-            </div>
+                    <!-- Cabecera -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 id="auth-card-title" class="text-xl font-extrabold text-white">Ingresa a tu comercio</h2>
+                            <p id="auth-card-subtitle" class="text-xs text-gray-400 mt-0.5">Accede a tu catálogo, clientes y estudio IA</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 p-1.5 flex items-center justify-center">
+                            <img src="/static/logo-catalia.png" alt="CataliA"
+                                onerror="this.style.display='none';"
+                                class="w-full h-full object-contain">
+                        </div>
+                    </div>
 
-            <!-- Form Login -->
-            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">Correo electrónico</label>
-                    <input type="email" id="login-email" required placeholder="tucomercio@ejemplo.bo"
-                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500">
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">Contraseña</label>
-                    <input type="password" id="login-password" required placeholder="••••••••"
-                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500">
-                </div>
-                <button type="submit"
-                    class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-purple-900/40">
-                    Entrar al Sistema
-                </button>
-            </form>
+                    <!-- Tabs -->
+                    <div class="grid grid-cols-2 bg-black/50 p-1 rounded-xl border border-white/10 text-xs font-bold">
+                        <button id="tab-login" type="button" onclick="handleTabUi('login')"
+                            class="py-2.5 rounded-lg text-purple-300 border-b-2 border-purple-400 bg-purple-950/40 transition cursor-pointer">
+                            Iniciar Sesión
+                        </button>
+                        <button id="tab-register" type="button" onclick="handleTabUi('register')"
+                            class="py-2.5 rounded-lg text-gray-400 hover:text-white transition cursor-pointer">
+                            Crear Cuenta Gratis
+                        </button>
+                    </div>
 
-            <!-- Form Registro -->
-            <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4 hidden">
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">Nombre del comercio</label>
-                    <input type="text" id="reg-business" required placeholder="Ej. Importadora Andina"
-                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500">
-                </div>
+                    <div id="auth-error"
+                        class="hidden bg-red-950/85 border border-red-700/80 text-red-200 text-xs rounded-xl p-3.5 leading-relaxed">
+                    </div>
 
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">WhatsApp de ventas</label>
-                    <div class="flex items-center space-x-2">
-                        <div class="flex items-center bg-gray-800 border border-gray-700 rounded-xl px-2.5 py-2.5 space-x-2">
-                            <span id="country-flag-icon" class="w-6 h-4 overflow-hidden rounded-sm inline-flex items-center"></span>
-                            <select id="reg-country-code" onchange="updateCountryFlag('reg-country-code', 'country-flag-icon')"
-                                class="bg-transparent text-xs text-white focus:outline-none">
+                    <!-- Form Login -->
+                    <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                        <div>
+                            <label for="login-email" class="block text-xs font-semibold text-gray-300 mb-1.5">Correo electrónico</label>
+                            <input type="email" id="login-email" required placeholder="tucomercio@ejemplo.bo"
+                                class="w-full bg-black/60 border border-gray-700/80 rounded-xl px-3.5 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <label for="login-password" class="block text-xs font-semibold text-gray-300">Contraseña</label>
+                                <button type="button" onclick="togglePasswordVisibility('login-password', this)"
+                                    class="text-[11px] text-purple-400 hover:text-purple-300 cursor-pointer">
+                                    Mostrar
+                                </button>
+                            </div>
+                            <input type="password" id="login-password" required placeholder="••••••••"
+                                class="w-full bg-black/60 border border-gray-700/80 rounded-xl px-3.5 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition">
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg shadow-purple-900/40 cursor-pointer">
+                            Entrar al Sistema →
+                        </button>
+
+                        <p class="text-center text-xs text-gray-400 pt-1">
+                            ¿Aún no tienes tienda digital?
+                            <button type="button" onclick="handleTabUi('register')" class="text-emerald-400 hover:underline font-bold cursor-pointer">
+                                Crea tu cuenta aquí
+                            </button>
+                        </p>
+                    </form>
+
+                    <!-- Form Registro -->
+                    <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                        <div>
+                            <label for="reg-business" class="block text-xs font-semibold text-gray-300 mb-1.5">Nombre de tu negocio o marca</label>
+                            <input type="text" id="reg-business" required placeholder="Ej. Importadora Andina"
+                                class="w-full bg-black/60 border border-gray-700/80 rounded-xl px-3.5 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition">
+                        </div>
+
+                        <div>
+                            <label for="reg-whatsapp" class="block text-xs font-semibold text-gray-300 mb-1.5">WhatsApp donde recibirás pedidos</label>
+                            <div class="flex items-center space-x-2">
+                                <div class="flex items-center bg-black/60 border border-gray-700/80 rounded-xl px-2.5 py-3 space-x-2">
+                                    <span id="country-flag-icon" class="w-6 h-4 overflow-hidden rounded-sm inline-flex items-center"></span>
+                                    <select id="reg-country-code" onchange="updateCountryFlag('reg-country-code', 'country-flag-icon')"
+                                        class="bg-transparent text-xs text-white focus:outline-none">
+                                    </select>
+                                </div>
+                                <input type="tel" id="reg-whatsapp" required placeholder="71234567"
+                                    class="flex-1 bg-black/60 border border-gray-700/80 rounded-xl px-3.5 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="reg-email" class="block text-xs font-semibold text-gray-300 mb-1.5">Correo electrónico</label>
+                            <input type="email" id="reg-email" required placeholder="ventas@comercio.bo"
+                                class="w-full bg-black/60 border border-gray-700/80 rounded-xl px-3.5 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <label for="reg-password" class="block text-xs font-semibold text-gray-300">Crea una contraseña</label>
+                                <button type="button" onclick="togglePasswordVisibility('reg-password', this)"
+                                    class="text-[11px] text-purple-400 hover:text-purple-300 cursor-pointer">
+                                    Mostrar
+                                </button>
+                            </div>
+                            <input type="password" id="reg-password" required minlength="4" placeholder="Mínimo 4 caracteres"
+                                class="w-full bg-black/60 border border-gray-700/80 rounded-xl px-3.5 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition">
+                        </div>
+
+                        <div>
+                            <label for="reg-plan" class="block text-xs font-semibold text-gray-300 mb-1.5">Plan inicial</label>
+                            <select id="reg-plan" onchange="togglePaymentSection()"
+                                class="w-full bg-black/60 border border-gray-700/80 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition">
+                                <option value="free">Plan Freemium (0 Bs — hasta 10 productos y 2 flyers)</option>
+                                <option value="pro_50bs">Plan Comercio Pro (65 Bs / mes)</option>
+                                <option value="campana">Pase Campaña (120 Bs)</option>
                             </select>
                         </div>
-                        <input type="tel" id="reg-whatsapp" required placeholder="71234567"
-                            class="flex-1 bg-gray-800 border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500">
-                    </div>
-                </div>
 
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">Correo electrónico</label>
-                    <input type="email" id="reg-email" required placeholder="ventas@comercio.bo"
-                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500">
-                </div>
+                        <!-- Simulación de Pago -->
+                        <div id="payment-sim-box" class="hidden bg-black/65 border border-purple-700/50 rounded-2xl p-4 space-y-3">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-gray-300 font-semibold">Simulación de Activación:</span>
+                                <span id="payment-amount-label" class="text-emerald-400 font-extrabold">65.00 Bs / mes</span>
+                            </div>
+                            <div class="flex space-x-2 text-xs">
+                                <button type="button" id="btn-pay-qr" onclick="switchPaymentMethod('qr')"
+                                    class="flex-1 py-2 rounded-lg font-bold bg-purple-600 text-white transition cursor-pointer">
+                                    QR Simple
+                                </button>
+                                <button type="button" id="btn-pay-card" onclick="switchPaymentMethod('card')"
+                                    class="flex-1 py-2 rounded-lg font-bold bg-gray-800 text-gray-300 transition cursor-pointer">
+                                    Tarjeta
+                                </button>
+                            </div>
+                            <div id="pay-method-qr" class="text-center text-xs text-gray-400 py-2">
+                                Escanea o confirma el pago QR de prueba para activar tu plan al instante.
+                            </div>
+                            <div id="pay-method-card" class="hidden grid grid-cols-2 gap-2 text-xs">
+                                <input type="text" placeholder="4111 •••• •••• 1111"
+                                    class="col-span-2 bg-gray-900 border border-gray-700 rounded-lg p-2 text-white">
+                                <input type="text" placeholder="MM/AA"
+                                    class="bg-gray-900 border border-gray-700 rounded-lg p-2 text-white">
+                                <input type="text" placeholder="CVV"
+                                    class="bg-gray-900 border border-gray-700 rounded-lg p-2 text-white">
+                            </div>
+                        </div>
 
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">Contraseña</label>
-                    <input type="password" id="reg-password" required minlength="4" placeholder="Mínimo 4 caracteres"
-                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500">
-                </div>
-
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">Plan inicial</label>
-                    <select id="reg-plan" onchange="togglePaymentSection()"
-                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500">
-                        <option value="free">Plan Freemium (0 Bs — hasta 10 productos y 2 flyers)</option>
-                        <option value="pro_50bs">Plan Comercio Pro (65 Bs / mes)</option>
-                        <option value="campana">Pase Campaña (120 Bs)</option>
-                    </select>
-                </div>
-
-                <!-- Simulación de Pago -->
-                <div id="payment-sim-box" class="hidden bg-gray-800/80 border border-purple-800/50 rounded-2xl p-4 space-y-3">
-                    <div class="flex justify-between items-center text-xs">
-                        <span class="text-gray-300 font-semibold">Simulación de Activación:</span>
-                        <span id="payment-amount-label" class="text-emerald-400 font-extrabold">65.00 Bs / mes</span>
-                    </div>
-                    <div class="flex space-x-2 text-xs">
-                        <button type="button" id="btn-pay-qr" onclick="switchPaymentMethod('qr')"
-                            class="flex-1 py-2 rounded-lg font-bold bg-purple-600 text-white transition">
-                            QR Simple
+                        <button type="submit"
+                            class="w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-gray-950 font-extrabold py-3.5 rounded-xl text-sm transition shadow-lg shadow-emerald-900/30 cursor-pointer">
+                            Crear mi Catálogo Ahora ✓
                         </button>
-                        <button type="button" id="btn-pay-card" onclick="switchPaymentMethod('card')"
-                            class="flex-1 py-2 rounded-lg font-bold bg-gray-800 text-gray-300 transition">
-                            Tarjeta
-                        </button>
-                    </div>
-                    <div id="pay-method-qr" class="text-center text-xs text-gray-400 py-2">
-                        Escanea o confirma el pago QR de prueba para activar tu plan al instante.
-                    </div>
-                    <div id="pay-method-card" class="hidden grid grid-cols-2 gap-2 text-xs">
-                        <input type="text" placeholder="4111 •••• •••• 1111"
-                            class="col-span-2 bg-gray-900 border border-gray-700 rounded-lg p-2 text-white">
-                        <input type="text" placeholder="MM/AA"
-                            class="bg-gray-900 border border-gray-700 rounded-lg p-2 text-white">
-                        <input type="text" placeholder="CVV"
-                            class="bg-gray-900 border border-gray-700 rounded-lg p-2 text-white">
-                    </div>
-                </div>
 
-                <button type="submit"
-                    class="w-full bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-black py-3 rounded-xl text-sm transition shadow-lg shadow-emerald-900/30">
-                    Registrar Comercio
-                </button>
-            </form>
-        </div>
+                        <p class="text-center text-xs text-gray-400 pt-1">
+                            ¿Ya tienes cuenta?
+                            <button type="button" onclick="handleTabUi('login')" class="text-purple-400 hover:underline font-bold cursor-pointer">
+                                Inicia sesión
+                            </button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="text-center py-6 text-xs text-gray-500 border-t border-gray-900">
-        CataliA Bolivia · Plataforma SaaS para Comercios
+    <footer class="text-center py-6 text-xs text-gray-500 border-t border-white/10 bg-black/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span>CataliA Bolivia · Plataforma SaaS para Comercios</span>
+            <span class="text-gray-600">Catálogo Inteligente · WhatsApp Directo · IA Generativa</span>
+        </div>
     </footer>
 
     <script src="/static/js/api.js"></script>
     <script src="/static/js/session.js"></script>
     <script src="/static/js/countries.js"></script>
     <script src="/static/js/auth-page.js"></script>
+    <script>
+        function handleTabUi(mode) {
+            if (typeof switchTab === "function") {
+                switchTab(mode);
+            }
+            const titleEl = document.getElementById("auth-card-title");
+            const subEl = document.getElementById("auth-card-subtitle");
+            if (mode === "register") {
+                if (titleEl) titleEl.textContent = "Crea tu tienda en 1 minuto";
+                if (subEl) subEl.textContent = "Comienza gratis y publica tus primeros productos hoy";
+            } else {
+                if (titleEl) titleEl.textContent = "Ingresa a tu comercio";
+                if (subEl) subEl.textContent = "Accede a tu catálogo, clientes y estudio IA";
+            }
+        }
+
+        function focusAuth(mode) {
+            handleTabUi(mode);
+            document.getElementById("auth-card")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        function selectPlanAndRegister(planValue) {
+            handleTabUi("register");
+            const planSelect = document.getElementById("reg-plan");
+            if (planSelect) {
+                planSelect.value = planValue;
+                if (typeof togglePaymentSection === "function") {
+                    togglePaymentSection();
+                }
+            }
+            document.getElementById("auth-card")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+            btn.textContent = isHidden ? "Ocultar" : "Mostrar";
+        }
+
+        // Lee ?tab=register&plan=pro_50bs al venir desde como-funciona.html o planes.html
+        window.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const tab = params.get("tab");
+            const plan = params.get("plan");
+            if (tab === "register") {
+                if (plan && ["free", "pro_50bs", "campana"].includes(plan)) {
+                    selectPlanAndRegister(plan);
+                } else {
+                    handleTabUi("register");
+                }
+            } else if (tab === "login") {
+                handleTabUi("login");
+            }
+        });
+    </script>
 </body>
 
 </html>
